@@ -12,6 +12,7 @@ import uuid
 import math
 import linecache
 import sys
+import settings
 
 def PrintException():
     exc_type, exc_obj, tb = sys.exc_info()
@@ -47,7 +48,7 @@ command = CommandHandler()
 
 lastTimer = -606
 def StartTelegram():
-	updater = telegram.ext.Updater("812651832:AAFyITJP_a0bn--9sfISeKiJMLf3rk8YnQ4", use_context = True)
+	updater = telegram.ext.Updater(settings.BOT_TOKEN, use_context = True)
 	dispatcher = updater.dispatcher
 	
 	interestingCat = "🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕\n🌕🌕🌘🌑🌓🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕\n🌕🌕🌑🌕🌕🌕🌗🌑🌑🌑🌕🌕🌕🌕🌕\n🌕🌕🌑🌕🌕🌖🌑👁🌑👁🌔🌗🌑🌕🌕\n🌕🌕🌘🌓🌕🌑🌑🌑🌑🌑🌔🌕🌘🌔🌕\n🌕🌕🌗🌑🌘🌑🌑🌑🌑🌑🌕🌖🌑🌕🌕\n🌕🌕🌕🌘🌑🌑🌑🌑🌑🌕🌖🌑🌔🌕🌕\n🌕🌕🌕🌖🌑🌑🌑🌑🌑🌑🌑🌔🌕🌕🌕\n🌕🌕🌕🌗🌑🌑🌑🌑🌑🌑🌕🌕🌕🌕🌕\n🌕🌕🌕🌘🌑🌕🌕🌘🌑🌔🌕🌕🌕🌕🌕\n🌕🌕🌕🌑🌓🌕🌕🌗🌑🌕🌕🌕🌕🌕🌕\n🌕🌕🌖🌑🌔🌕🌕🌖🌑🌔🌕🌕🌕🌕🌕\n🌕🌕🌗🌑🌕🌕🌕🌕🌑🌑🌕🌕🌕🌕🌕\n🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕🌕\n"
@@ -69,7 +70,7 @@ def StartTelegram():
 		if not update.message:
 			return
 	
-		if update.message.from_user.name == "@DadaskisBot":
+		if update.message.from_user.name == "@DudkaRebornBot":
 			return
 
 		info = ChatUserInfo()
@@ -81,13 +82,17 @@ def StartTelegram():
 		info.telegramUpdate = update
 		
 		if update.message.reply_to_message:
-			if update.message.reply_to_message.from_user.username == "DadaskisBot":
+			if update.message.reply_to_message.from_user.username == "DudkaRebornBot":
 				info.botReply = True
 			info.reply = True
 			info.userIDReply = update.message.reply_to_message.from_user.id
 			info.userNameReply = update.message.reply_to_message.from_user.name
 		print("send")
-		context.bot.send_message(chat_id = update.effective_chat.id, text = command.handle(update.message.text, info))
+		
+		text = command.handle(update.message.text, info)
+
+		if text and text != '' and len(text) > 0:
+			context.bot.send_message(chat_id = update.effective_chat.id, text = command.handle(update.message.text, info))
 		
 	start_handler = telegram.ext.MessageHandler(telegram.ext.Filters.text, message)
 	dispatcher.add_handler(start_handler)

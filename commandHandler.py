@@ -31,4 +31,4 @@ class CommandHandler:
 					return string
 			except Exception as ex:
 				continue#print(ex)
-		return " "
+		return ''
